@@ -1,7 +1,7 @@
 name: Deploy to GitHub Pages # workflow의 이름을 설정
 
 on: # workflow가 어떤 이벤트에 반응할지 정의
-  dynamic: # 'push'
+  push: # 'push'
     branches: [main] # 'main' 브랜치에 push가 발생했을 때 workflow가 실행
   workflow_dispatch: # 이 옵션을 통해 workflow를 수동으로 실행
 
