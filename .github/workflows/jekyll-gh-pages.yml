@@ -1,51 +1,45 @@
 # Sample workflow for building and deploying a Jekyll site to GitHub Pages
-name: Deploy Jekyll with GitHub Pages dependencies preinstalled
 
-on:
-  # Runs on pushes targeting the default branch
-  push:
+name: Deploy Jekyll with GitHub Pages dependencies preinstalled #Github Action에 표시되는 Workflow 이름
+
+on: #이벤트 발생 트리거
+  push: #main branch에 push될 때 실행
     branches: ["main"]
+  workflow_dispatch: # Action 탭에서 수동으로 실행 가능
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+permissions: # GITHUB_TOKEN 권한 설정
+  contents: read #컨텐츠 읽기 권한
+  pages: write # 페이지 쓰기 권한
+  id-token: write # ID 토큰 쓰기 권한
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
+concurrency: # 동시 배포 설정: 실행 중인 작업과 최신 큐에 있는 작업 사이에서 큐 대기를 건너뛰기. 
+  group: "pages" #동시 실행되는 작업을 "pages"로 그룹화
+  cancel-in-progress: false #새로운 실행이 시작되어도 진행중인 progress를 cancel하지 않고 대기
+  
 jobs:
-  # Build job
-  build:
-    runs-on: ubuntu-latest
+  build:  # 빌드 작업
+    runs-on: ubuntu-latest # 운영체제 설정: Ubuntu 최신 버전 사용
+    
     steps:
-      - name: Checkout
+      - name: Checkout # 소스 코드 체크아웃
         uses: actions/checkout@v3
-      - name: Setup Pages
+      - name: Setup Pages # Pages 설정
         uses: actions/configure-pages@v3
-      - name: Build with Jekyll
+      - name: Build with Jekyll # Jekyll로 빌드
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./
           destination: ./_site
-      - name: Upload artifact
+      - name: Upload artifact # 아티팩트 업로드
         uses: actions/upload-pages-artifact@v2
 
-  # Deployment job
-  deploy:
-    environment:
+  deploy: # 배포 작업
+    environment: # 배포 환경 설정
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
+    runs-on: ubuntu-latest # 운영체제 설정: Ubuntu 최신 버전 사용
+    needs: build # 빌드 작업이 완료된 후에만 실행
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages       # GitHub Pages로 배포
         id: deployment
         uses: actions/deploy-pages@v2
