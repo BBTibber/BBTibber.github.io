@@ -14,11 +14,11 @@ jobs:
     steps:
       # GitHub 리포지토리 체크아웃
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.5.0
 
       # Node.js 설정
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3.1.0
         with:
           node-version: "14"
 
