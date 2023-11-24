@@ -1,1 +1,6 @@
 #this is empty
+
+on :
+  push :
+    branches: [ "main" ]
+    
